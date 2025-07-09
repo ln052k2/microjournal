@@ -58,6 +58,10 @@ if [[ "$1" == "install" ]]; then
         exit 1
     fi
 
+    # Create directories if they don't exist
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    BUILD_DIR="$SCRIPT_DIR/build"
+    mkdir -p "$BUILD_DIR"
     mkdir -p "$INSTALL_DIR"
 
     # Check file extension
@@ -67,14 +71,16 @@ if [[ "$1" == "install" ]]; then
                 echo "Error: gcc compiler not found."
                 exit 1
             fi
-            gcc "$SOURCE_FILE" -o "$TARGET"
+            gcc "$SOURCE_FILE" -o "$BUILD_DIR/$COMMAND_NAME"
+            cp "$BUILD_DIR/$COMMAND_NAME" "$TARGET"
             ;;
         cpp|cc|cxx)
             if ! command_exists g++; then
                 echo "Error: g++ compiler not found."
                 exit 1
             fi
-            g++ "$SOURCE_FILE" -o "$TARGET"
+            g++ "$SOURCE_FILE" -o "$BUILD_DIR/$COMMAND_NAME"
+            cp "$BUILD_DIR/$COMMAND_NAME" "$TARGET"
             ;;
         py)
             if ! head -n 1 "$SOURCE_FILE" | grep -q "^#\!"; then
