@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    // Close file and open nano
+    // Close file and open micro
     fclose(file);
     
     char command[600];
-    snprintf(command, sizeof(command), "nano %s", filepath);
+    snprintf(command, sizeof(command), "micro %s", filepath);
     system(command);
 
     return 0;
